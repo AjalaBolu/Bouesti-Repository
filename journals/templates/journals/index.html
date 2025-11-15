@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BOUESTI Research Repository</title>
+
+<style>
+  /* ================= GLOBAL ================= */
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #051808; /* dark green background */
+    color: #e8f5e9; /* soft text */
+    line-height: 1.6;
+  }
+
+  .container { width:92%; max-width:1100px; margin:auto; }
+  a { text-decoration:none; color:inherit; }
+
+  /* ================= NAVIGATION ================= */
+  .navwrap {
+    background: #0c2510;
+    color: #fff;
+    padding: 15px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+  .nav { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+  .brand { display:flex; flex-direction:column; color:#22c55e; font-weight:bold; font-size:1.2rem; line-height:1.2; }
+  .brand small { font-size:0.7rem; opacity:0.8; color:#a5d6a7; }
+  .navlinks { display:flex; gap:20px; }
+  .navlinks a { color:#a5d6a7; transition:0.2s; }
+  .navlinks a:hover { color:#22c55e; }
+  .cta { display:flex; align-items:center; gap:10px; }
+  .btn { background:#22c55e; color:#051808; padding:8px 14px; border-radius:6px; font-size:0.9rem; transition:0.2s, box-shadow 0.3s; }
+  .btn:hover { background:#16a34a; box-shadow:0 0 8px #22c55e, 0 0 12px #16a34a; }
+  .btn.outline { background:transparent; border:1px solid #22c55e; color:#22c55e; }
+  .btn.outline:hover { background:#22c55e; color:#051808; box-shadow:0 0 8px #22c55e; }
+
+  /* ================= HERO ================= */
+  .hero {
+    background: linear-gradient(rgba(5,24,8,0.6), rgba(5,24,8,0.6)), 
+    url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=60");
+    background-size: cover;
+    background-position: center;
+    color: #e8f5e9;
+    padding: 100px 0;
+    text-align: center;
+  }
+  .hero h1 { font-size:2.5rem; margin-bottom:10px; color:#22c55e; }
+  .hero p { font-size:1.1rem; margin-bottom:20px; opacity:0.9; }
+  .search { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+  .search input { padding:10px; width:280px; border-radius:6px; border:none; background:#0c2510; color:#e8f5e9; }
+  .search button { padding:10px 18px; border:none; border-radius:6px; background:#22c55e; color:#051808; cursor:pointer; transition:0.2s, box-shadow 0.3s; }
+  .search button:hover { background:#16a34a; box-shadow:0 0 8px #22c55e, 0 0 12px #16a34a; }
+
+  /* ================= GRID ================= */
+  .grid-3 { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px; }
+  .card {
+    background: #0e2d14;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.5);
+    transition:0.3s, box-shadow 0.3s;
+  }
+  .card:hover { transform:translateY(-5px); box-shadow:0 0 10px #22c55e, 0 0 18px #16a34a; }
+  .card h3 { margin-bottom:8px; color:#22c55e; }
+  .text-muted { color:#a5d6a7; font-size:0.9rem; margin-top:5px; }
+  .btn.small { padding:6px 12px; font-size:0.8rem; }
+
+  /* ================= SECTIONS ================= */
+  .py-5 { padding:50px 0; }
+  .bg-light { background:#08200c; }
+
+  /* ================= FOOTER ================= */
+  .footer { text-align:center; background:#0c2510; color:#a5d6a7; padding:15px 0; margin-top:40px; }
+
+  /* ================= RESPONSIVENESS ================= */
+  @media (max-width: 768px) {
+    .nav { flex-direction:column; gap:10px; }
+    .navlinks { gap:10px; }
+    .hero h1 { font-size:2rem; }
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navwrap">
+    <div class="container nav">
+      <a href="{% url 'home' %}" class="brand">
+        BOUESTI Repository
+        <small>Journals • Theses • Projects</small>
+      </a>
+
+      <nav class="navlinks">
+        <a href="#browse">Browse</a>
+        <a href="#collections">Collections</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="cta">
+        {% if user.is_authenticated %}
+          <span>Hi, {{ user.username }}!</span>
+          <a class="btn outline" href="{% url 'logout_view' %}">Logout</a>
+          <a class="btn" href="{% url 'upload_journal' %}">Submit Work</a>
+        {% else %}
+          <a class="btn outline" href="{% url 'login_view' %}">Sign In</a>
+          <a class="btn" href="{% url 'register_view' %}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <h1>BOUESTI Research Repository</h1>
+      <p>Access and share academic journals, theses, and project papers.</p>
+
+      <form class="search" action="{% url 'search_journals' %}" method="get">
+        <input type="text" name="q" placeholder="Search by title, author, or department…" required />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- JOURNALS -->
+  <section id="browse" class="py-5">
+    <div class="container">
+      <h2>Latest Approved Journals</h2>
+
+      {% if journals %}
+      <div class="grid-3">
+        {% for journal in journals %}
+          <div class="card">
+            <h3>{{ journal.title }}</h3>
+            <p><strong>Author:</strong> {{ journal.author }}</p>
+            <p><strong>Department:</strong> {{ journal.department }}</p>
+            {% if journal.abstract %}
+              <p class="text-muted">{{ journal.abstract|truncatewords:25 }}</p>
+            {% endif %}
+            {% if journal.file %}
+              <a class="btn small" href="{{ journal.file.url }}" target="_blank">View Journal</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No approved journals available yet.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="bg-light py-5">
+    <div class="container">
+      <h2>About</h2>
+      <p>This repository collects and preserves academic works produced within BOUESTI.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container py-5">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:repository@bouesti.edu.ng">repository@bouesti.edu.ng</a></p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; {{ now|date:"Y" }} BOUESTI Research Repository</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+/*
+ * This file is primarily used to import Tailwind's base, components, and utilities.
+ * If you need to add custom CSS, use the @layer directive to organize it
+ * and ensure it works correctly with Tailwind's styles.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Example of adding a custom utility class.
+ * You can apply this class to any element in your HTML.
+ */
+@layer utilities {
+    .smooth-scale {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Example of a custom background for the login body that's not easily done with simple utilities */
+    .custom-body-bg {
+        /* A subtle gradient that enhances the look */
+        background: linear-gradient(135deg, #f0f4f8 0%, #2d75c8 100%);
+    }
+}
+
+/*
+ * If you need to override a default element style, you can do it here.
+ * For example, ensuring the 'Inter' font is used everywhere if the Tailwind config didn't catch it.
+ */
+body {
+    font-family: 'Inter', sans-serif;
+}

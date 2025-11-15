@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Journal | BOUESTI Repository</title>
+
+  <style>
+    /* ===== GENERAL ===== */
+    body {
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0d1117;
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(90deg, #065f46, #047857);
+      color: #fff;
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+
+    main {
+      background: #111827;
+      margin-top: 40px;
+      padding: 40px 50px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(4, 120, 87, 0.25);
+      width: 90%;
+      max-width: 800px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #22c55e;
+      margin-bottom: 30px;
+      font-size: 1.6rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #a7f3d0;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea,
+    select,
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #064e3b;
+      background-color: #1f2937;
+      color: #e5e7eb;
+      font-size: 1rem;
+      transition: border 0.3s, background 0.3s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border: 1px solid #22c55e;
+      background-color: #0f172a;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit {
+      background: #22c55e;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background: #16a34a;
+      transform: translateY(-2px);
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .back-link a {
+      color: #86efac;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    .success-message {
+      background-color: #064e3b;
+      border-left: 6px solid #22c55e;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      color: #a7f3d0;
+      font-weight: 500;
+    }
+
+    .error-message {
+      background-color: #3f1d1d;
+      border-left: 6px solid #ef4444;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      color: #fca5a5;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BOUESTI Research Repository</h1>
+  </header>
+
+  <main>
+    <h2>📤 Upload New Journal</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          <div class="success-message">{{ message }}</div>
+        {% else %}
+          <div class="error-message">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Title -->
+      <div>
+        <label for="title">Journal Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter journal title" required>
+      </div>
+
+      <!-- Author -->
+      <div>
+        <label for="author">Author(s)</label>
+        <input type="text" id="author" name="author" placeholder="Enter author name(s)" required>
+      </div>
+
+      <!-- Department -->
+      <div>
+        <label for="department">Department</label>
+        <select id="department" name="department" required>
+          <option value="">Select Department</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Business Administration">Business Administration</option>
+          <option value="Education">Education</option>
+          <option value="Sciences">Sciences</option>
+        </select>
+      </div>
+
+      <!-- Supervisor -->
+      <div>
+        <label for="supervisor">Supervisor (if applicable)</label>
+        <input type="text" id="supervisor" name="supervisor" placeholder="Enter supervisor name (optional)">
+      </div>
+
+      <!-- Year -->
+      <div>
+        <label for="year">Year of Publication</label>
+        <input type="number" id="year" name="year" min="2000" max="2099" placeholder="e.g. 2025">
+      </div>
+
+      <!-- Keywords -->
+      <div>
+        <label for="keywords">Keywords</label>
+        <input type="text" id="keywords" name="keywords" placeholder="e.g. AI, Machine Learning, Cloud Computing">
+      </div>
+
+      <!-- Abstract -->
+      <div>
+        <label for="abstract">Abstract</label>
+        <textarea id="abstract" name="abstract" placeholder="Write a concise summary of your paper..." required></textarea>
+      </div>
+
+      <!-- File Upload -->
+      <div>
+        <label for="pdf_file">Upload PDF File</label>
+        <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Journal</button>
+    </form>
+
+    <div class="back-link">
+      <a href="{% url 'user_dashboard' %}">← Back to Dashboard</a>
+    </div>
+  </main>
+</body>
+</html>
